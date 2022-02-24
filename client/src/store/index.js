@@ -16,19 +16,19 @@ export default new Vuex.Store({
   },
   actions: {
     getSearch(context, { name }) {
-      // return new Promise((resolve, reject) => {
-      axios
-        .get(`http://localhost:3000/search/place?location=${name}`)
-        .then((resp) => {
-          console.log(resp.data);
-          context.commit("SET_COORDINATES", resp.data);
-          // resolve();
-        })
-        .catch((err) => {
-          // reject();
-          console.log(err);
-        });
-      // });
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`http://localhost:3000/search/place?location=${name}`)
+          .then((resp) => {
+            console.log(resp.data);
+            context.commit("SET_COORDINATES", resp.data);
+            resolve();
+          })
+          .catch((err) => {
+            reject();
+            console.log(err);
+          });
+      });
     },
   },
   modules: {},

@@ -1,6 +1,6 @@
 <template>
-  <div class="main-search-input-wrap">
-    <div id="map" style="width: 1000px; height: 600px"></div>
+  <div>
+    <div id="map" style="width: 100vw; height: 100vh"></div>
     <div class="main-search-input fl-wrap">
       <div class="main-search-input-item">
         <input
@@ -18,9 +18,11 @@
 // @ is an alias to /src
 export default {
   name: "HomeView",
+
   data() {
     return {
       searchName: "",
+      map: null,
     };
   },
   computed: {
@@ -30,55 +32,58 @@ export default {
   },
   methods: {
     search() {
-      this.$store.dispatch("getSearch", { name: this.searchName }).then(() => {
-        this.run();
-      });
-    },
-    run() {
       /* eslint-disable */
-      console.log(
-        this.coordinates.place.candidates[0].geometry.location.lng,
-        this.coordinates.place.candidates[0].geometry.location.lat
-      );
+      this.$store.dispatch("getSearch", { name: this.searchName }).then(() => {
+        let hotels = [];
+        this.coordinates.nearbyPlace.results.forEach((el) => {
+          let temp = [];
+          temp.push(el.geometry.location.lng);
+          temp.push(el.geometry.location.lat);
+          hotels.push(temp);
+        });
 
-      mapboxgl.accessToken =
-      navigator.geolocation.getCurrentPosition(success, error, {
-        enableHighAccuracy: true,
-      });
-      function success(position) {
-        setupLocation([position.coords.longitude, position.coords.latitude]);
-      }
-      function error(position) {
-        setupLocation([-6.208417, 106.83919]);
-      }
-      if (!this.coordinates) {
-        setupLocation([position.coords.longitude, position.coords.latitude]);
-      } else {
-        setupLocation([
+        this.map.setCenter([
           this.coordinates.place.candidates[0].geometry.location.lng,
           this.coordinates.place.candidates[0].geometry.location.lat,
         ]);
-        this.coordinates.nearbyPlace.results.forEach((el) => {
-          return new mapboxgl.Marker().set
-            .setLngLat([el.geometry.location.lat, el.geometry.location.lng])
-            .addTo(map);
+        const marker = new mapboxgl.Marker({
+          color: "#FFFFFF",
+        })
+          .setLngLat([
+            this.coordinates.place.candidates[0].geometry.location.lng,
+            this.coordinates.place.candidates[0].geometry.location.lat,
+          ])
+          .addTo(this.map);
+        hotels.forEach((el) => {
+          const nearbyMarket = new mapboxgl.Marker({
+            color: "red",
+          })
+            .setLngLat(el)
+            .addTo(this.map);
         });
-      }
 
-      function setupLocation(center) {
-        const map = new mapboxgl.Map({
-          container: "map", // container ID
-          style: "mapbox://styles/mapbox/streets-v11", // style URL
-          center: center, // starting position [lng, lat]
-          zoom: 16, // starting zoom
-        });
-      }
+        console.log(this.map, "<<<<<<");
+      });
     },
   },
+  mounted() {
+    console.log("abcd");
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoibWFoYXJkaWthZHdpcHV0cmExMyIsImEiOiJja3p6MW1hMG4wNDdpM3BwYmdsY3ZqaXd4In0.vs-DzV-aeM8q6BPONXrcbA";
+    const newmap = new mapboxgl.Map({
+      container: "map", // container ID
+      style: "mapbox://styles/mapbox/streets-v11", // style URL
+      center: [106.8334, -6.1291], // starting position [lng, lat]
+      zoom: 14, // starting zoom
+    });
+    const marker = new mapboxgl.Marker({
+      color: "#FFFFFF",
+    })
+      .setLngLat([106.8334, -6.1291])
+      .addTo(newmap);
 
-  created() {
-    this.run();
-    this.search();
+    this.map = newmap;
+    console.log(newmap, "mounted");
   },
 };
 </script>

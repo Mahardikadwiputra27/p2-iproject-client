@@ -20,7 +20,6 @@ export default new Vuex.Store({
         axios
           .get(`http://localhost:3000/search/place?location=${name}`)
           .then((resp) => {
-            console.log(resp.data);
             context.commit("SET_COORDINATES", resp.data);
             resolve();
           })
@@ -29,6 +28,13 @@ export default new Vuex.Store({
             console.log(err);
           });
       });
+    },
+    postLogin(context, payload) {
+      console.log(payload);
+      return axios.post("http://localhost:3000/user/login", payload);
+    },
+    postRegister(context, payload) {
+      return axios.post("http://localhost:3000/user/register", payload);
     },
   },
   modules: {},

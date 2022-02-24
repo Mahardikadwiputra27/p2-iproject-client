@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div id="map" style="width: 100vw; height: 100vh"></div>
     <div class="main-search-input fl-wrap">
       <div class="main-search-input-item">
         <input
@@ -11,6 +10,7 @@
       </div>
       <button class="main-search-button" @click.prevent="search">Search</button>
     </div>
+    <div id="map" style="width: 100vw; height: 100vh"></div>
   </div>
 </template>
 
@@ -94,6 +94,7 @@ body {
 }
 
 .main-search-input {
+  text-align: center;
   background: #fff;
   padding: 0 120px 0 0;
   border-radius: 1px;

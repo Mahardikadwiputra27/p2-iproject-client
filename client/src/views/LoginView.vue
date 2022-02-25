@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper fadeInDown">
-    <nav-bar></nav-bar>
     <div id="formContent">
       <form @submit.prevent="login">
         <input
@@ -22,18 +21,16 @@
         <input type="submit" class="fadeIn fourth" value="Log In" />
       </form>
       <div id="formFooter">
-        <a class="underlineHover" @click="redirectRegister"
-          >Create a new account</a
-        >
+        <button class="underlineHover" @click.prevent="redirectRegister">
+          Create a new account
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from "../components/NavBar.vue";
 export default {
-  components: { NavBar },
   name: "LoginView",
   data() {
     return {

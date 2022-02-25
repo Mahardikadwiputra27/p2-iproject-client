@@ -1,5 +1,6 @@
 <template>
   <div>
+    <nav-bar></nav-bar>
     <div class="main-search-input fl-wrap">
       <div class="main-search-input-item">
         <input
@@ -15,10 +16,11 @@
 </template>
 
 <script>
+import NavBar from "../components/NavBar.vue";
 // @ is an alias to /src
 export default {
+  components: { NavBar },
   name: "HomeView",
-
   data() {
     return {
       searchName: "",
